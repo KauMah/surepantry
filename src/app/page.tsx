@@ -1,15 +1,14 @@
-import Link from "next/link";
+import Link from 'next/link';
 
-import { CreatePost } from "~/app/_components/create-post";
-import { getServerAuthSession } from "~/server/auth";
-import { redirect } from "next/navigation";
+import { getServerAuthSession } from '~/server/auth';
+import { redirect } from 'next/navigation';
 
 export default async function Home() {
   // const hello = await api.post.hello.query({ text: "from tRPC" });
   const session = await getServerAuthSession();
 
   if (!!session?.user) {
-    redirect("/home");
+    redirect('/home');
   }
 
   return (
@@ -29,25 +28,14 @@ export default async function Home() {
               {session && <span>Logged in as {session.user?.name}</span>}
             </p>
             <Link
-              href={session ? "/api/auth/signout" : "/api/auth/signin"}
-              className="rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20"
+              href={session ? '/api/auth/signout' : '/api/auth/signin'}
+              className="rounded-full bg-white/10 px-10 py-3 font-semibold transition hover:bg-white/20"
             >
-              {session ? "Sign out" : "Sign in"}
+              {session ? 'Sign out' : 'Sign in'}
             </Link>
           </div>
         </div>
       </div>
     </main>
-  );
-}
-
-async function CrudShowcase() {
-  const session = await getServerAuthSession();
-  if (!session?.user) return null;
-
-  return (
-    <div className="w-full max-w-xs">
-      <CreatePost />
-    </div>
   );
 }
