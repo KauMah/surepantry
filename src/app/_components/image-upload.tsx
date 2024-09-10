@@ -1,11 +1,13 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
+import { createWorker } from 'tesseract.js';
 
 export function ImageUpload() {
   const [dragActive, setDragActive] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<File[]>([]);
+  const [imgText, setImgText] = useState<string>('');
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
@@ -17,15 +19,26 @@ export function ImageUpload() {
     }
   }
 
-  function handleSubmitFile(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmitFile(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (files.length === 0) {
+    if (!files || files.length === 0) {
       // no file has been submitted
       console.log('rats I failed');
     } else {
       // write submit logic here
       console.log(files[0]);
       setFiles(files);
+      const worker = await createWorker('eng', 1, {
+        workerPath:
+          'https://cdn.jsdelivr.net/npm/tesseract.js@v5.0.0/dist/worker.min.js',
+        langPath: 'https://tessdata.projectnaptha.com/4.0.0',
+        corePath: 'https://cdn.jsdelivr.net/npm/tesseract.js-core@v5.0.0',
+      });
+
+      const {
+        data: { text },
+      } = await worker.recognize(files[0]!);
+      console.log(text);
     }
   }
 
