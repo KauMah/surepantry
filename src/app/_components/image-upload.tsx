@@ -7,7 +7,6 @@ export function ImageUpload() {
   const [dragActive, setDragActive] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<File[]>([]);
-  const [imgText, setImgText] = useState<string>('');
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
@@ -28,12 +27,7 @@ export function ImageUpload() {
       // write submit logic here
       console.log(files[0]);
       setFiles(files);
-      const worker = await createWorker('eng', 1, {
-        workerPath:
-          'https://cdn.jsdelivr.net/npm/tesseract.js@v5.0.0/dist/worker.min.js',
-        langPath: 'https://tessdata.projectnaptha.com/4.0.0',
-        corePath: 'https://cdn.jsdelivr.net/npm/tesseract.js-core@v5.0.0',
-      });
+      const worker = await createWorker('eng');
 
       const {
         data: { text },
@@ -93,7 +87,7 @@ export function ImageUpload() {
       <form
         className={`${
           dragActive ? 'bg-blue-400' : 'bg-blue-100'
-        }  flex min-h-[10rem] w-1/3  flex-col items-center justify-center rounded-lg p-4 text-center`}
+        }  h-7/6 flex min-h-[10rem]  w-1/3 flex-col items-center justify-center rounded-lg p-4 text-center`}
         onDragEnter={handleDragEnter}
         onSubmit={handleSubmitFile}
         onDrop={handleDrop}
@@ -118,6 +112,7 @@ export function ImageUpload() {
             <img
               src={URL.createObjectURL(files[0] as Blob)}
               alt="hello there"
+              className="h-5/6"
             />
           </>
         ) : (

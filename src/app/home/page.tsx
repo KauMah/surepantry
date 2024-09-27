@@ -3,13 +3,14 @@ import { api } from '~/trpc/server';
 import { CreatePost } from '../_components/create-post';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { ImageUpload } from '../_components/image-upload';
+import { Navbar } from '../_components/navbar';
 
 export default async function AppHome() {
   const session = await getServerAuthSession();
-  if (session)
+  if (!!session)
     return (
       <>
+        <Navbar />
         <div className="flex h-screen items-center justify-center">
           <CrudShowcase />
         </div>
@@ -35,15 +36,8 @@ async function CrudShowcase() {
             <p>You have no posts yet.</p>
           )}
           <CreatePost />
-          <Link
-            href={'/api/auth/signout'}
-            className="mx-auto rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-black/10   "
-          >
-            Sign Out
-          </Link>
         </div>
       </div>
-      <ImageUpload />
     </>
   );
 }
