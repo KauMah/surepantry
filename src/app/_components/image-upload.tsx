@@ -7,6 +7,7 @@ export function ImageUpload() {
   const [dragActive, setDragActive] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<File[]>([]);
+  const [imgText, setImgText] = useState<string>('');
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
@@ -32,7 +33,7 @@ export function ImageUpload() {
       const {
         data: { text },
       } = await worker.recognize(files[0]!);
-      console.log(text);
+      setImgText(text);
     }
   }
 
@@ -83,67 +84,70 @@ export function ImageUpload() {
     }
   }
   return (
-    <div className="flex h-screen flex-col items-center justify-center">
-      <form
-        className={`${
-          dragActive ? 'bg-blue-400' : 'bg-blue-100'
-        }  h-7/6 flex min-h-[10rem]  w-1/3 flex-col items-center justify-center rounded-lg p-4 text-center`}
-        onDragEnter={handleDragEnter}
-        onSubmit={handleSubmitFile}
-        onDrop={handleDrop}
-        onDragLeave={handleDragLeave}
-        onDragOver={handleDragOver}
-      >
-        <input
-          placeholder="fileInput"
-          className="hidden"
-          ref={inputRef}
-          type="file"
-          multiple={true}
-          onChange={handleChange}
-          accept=".png,.jpg,.jpeg"
-          style={{ height: '20px', backgroundColor: '#FFF' }}
-        />
+    <div className="flex h-full flex-row justify-center ">
+      <div className="flex h-full flex-col items-center justify-center">
+        <form
+          className={`${
+            dragActive ? 'bg-blue-400' : 'bg-blue-100'
+          }  flex h-1/2 min-h-[20rem]  w-auto flex-col items-center justify-center rounded-lg p-4 text-center`}
+          onDragEnter={handleDragEnter}
+          onSubmit={handleSubmitFile}
+          onDrop={handleDrop}
+          onDragLeave={handleDragLeave}
+          onDragOver={handleDragOver}
+        >
+          <input
+            placeholder="fileInput"
+            className="hidden"
+            ref={inputRef}
+            type="file"
+            multiple={true}
+            onChange={handleChange}
+            accept=".png,.jpg,.jpeg"
+            style={{ height: '20px', backgroundColor: '#FFF' }}
+          />
 
-        {files.length > 0 ? (
-          // <Image />>
-          <>
-            <p>{files[0]?.name}</p>
-            <img
-              src={URL.createObjectURL(files[0] as Blob)}
-              alt="hello there"
-              className="h-5/6"
-            />
-          </>
-        ) : (
-          <p>
-            Drag & Drop files or{' '}
-            <span
-              className="cursor-pointer font-bold text-blue-600"
-              onClick={openFileExplorer}
-            >
-              <u>Select files</u>
-            </span>{' '}
-            to upload
-          </p>
+          {files.length > 0 ? (
+            // <Image />>
+            <>
+              <p>{files[0]?.name}</p>
+              <img
+                src={URL.createObjectURL(files[0] as Blob)}
+                alt="hello there"
+                className="max-h-96"
+              />
+            </>
+          ) : (
+            <p>
+              Drag & Drop files or{' '}
+              <span
+                className="cursor-pointer font-bold text-blue-600"
+                onClick={openFileExplorer}
+              >
+                <u>Select files</u>
+              </span>{' '}
+              to upload
+            </p>
+          )}
+          <button
+            className="m-1 rounded-md bg-blue-400 p-1 transition-all hover:bg-blue-700 hover:text-blue-50"
+            type="submit"
+          >
+            Upload
+          </button>
+        </form>
+
+        {files.length > 0 && (
+          <button
+            className="m-1 rounded-md bg-blue-400 p-1 transition-all hover:bg-blue-700 hover:text-blue-50"
+            type="button"
+            onClick={clearFiles}
+          >
+            Clear Form{' '}
+          </button>
         )}
-        <button
-          className="m-1 rounded-md bg-blue-400 p-1 transition-all hover:bg-blue-700 hover:text-blue-50"
-          type="submit"
-        >
-          Upload
-        </button>
-      </form>
-
-      {files.length > 0 && (
-        <button
-          className="m-1 rounded-md bg-blue-400 p-1 transition-all hover:bg-blue-700 hover:text-blue-50"
-          type="button"
-          onClick={clearFiles}
-        >
-          Clear Form{' '}
-        </button>
-      )}
+      </div>
+      <div className="flex w-1/2">{imgText}</div>
     </div>
   );
 }
