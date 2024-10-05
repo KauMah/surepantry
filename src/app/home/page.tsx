@@ -1,7 +1,6 @@
 import { getServerAuthSession } from '~/server/auth';
 import { api } from '~/trpc/server';
 import { CreatePost } from '../_components/create-post';
-import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { Navbar } from '../_components/navbar';
 
