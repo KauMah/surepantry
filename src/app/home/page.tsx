@@ -11,7 +11,7 @@ export default async function AppHome() {
       <>
         <Navbar />
         <div className="flex h-screen items-center justify-center">
-          {/* <CrudShowcase /> */}
+          <CrudShowcase />
         </div>
       </>
     );
@@ -21,6 +21,7 @@ export default async function AppHome() {
 
 async function CrudShowcase() {
   const session = await getServerAuthSession();
+  return null;
   if (!session?.user) return null;
 
   const latestPost = await api.post.getLatest.query();
