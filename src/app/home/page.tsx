@@ -11,7 +11,7 @@ export default async function AppHome() {
       <>
         <Navbar />
         <div className="flex h-screen items-center justify-center">
-          <CrudShowcase />
+          {/* <CrudShowcase /> */}
         </div>
       </>
     );
